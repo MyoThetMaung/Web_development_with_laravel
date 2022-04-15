@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Mail\PostMail;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Mail\PostMarkdownMail;
+use Illuminate\Support\Facades\Mail;
 
 class PostController extends Controller
 {
@@ -15,7 +18,16 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::where('user_id',auth()->id())->get();
+        // $collection = collect(['one','two','three',null,''])->map(function($item){
+        //     return strtoupper($item);
+        // })->reject(function($name){
+        //     return empty($name);
+        // });
+
+        // $array = Post::pluck('name','id');
+        // dd($array);
+        
+        $posts = Post::where('user_id',auth()->id())->orderByDesc('id')->get();
         return view('home',compact('posts'));
     }
 
@@ -47,8 +59,10 @@ class PostController extends Controller
             'description.required' => 'Description is required OK?',
             'category_id.required' => 'Category is required OK?'
         ]);                                                                                     //customize error message
-        Post::create($validatedData);
-        return redirect('posts');
+        $post = Post::create($validatedData + ['user_id' => auth()->user()->id]);
+        // Mail::to('saimon@gmail.com')->send(new PostMail($post));                             //normal html template  
+        //Mail::to('saimon@gmail.com')->send(new PostMarkdownMail());                           //markdown template
+        return redirect('posts')->with('success','Post created successfully');      
     }
 
     /**

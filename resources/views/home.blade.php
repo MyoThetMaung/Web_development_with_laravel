@@ -6,6 +6,11 @@
             <a href="posts/create" class="btn btn-success mb-3">New Post</a>
             <a href="logout" class="btn btn-danger mb-3">Logout</a> 
         </div>
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
         <div class="card">
             <div class="card-header text-center">
               Contents

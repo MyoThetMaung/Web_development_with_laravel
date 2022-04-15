@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PostMail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
@@ -15,4 +17,14 @@ class HomeController extends Controller
     public function about(){
         return view('about');
     }
+
+    // public function mail(){
+    //     Mail::raw('hello mail testing', function($message){
+    //         $message->to('myothetmaung@gmail.com')->subject('mail');
+    //     });
+    // }
+
+    // public function mail(){
+    //     Mail::to('saimon@gmail.com')->send(new PostMail());
+    // }
 }
